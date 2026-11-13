@@ -2254,10 +2254,10 @@ Object.assign(CAMPAIGNS, {
 // Demo opens on a scenario chooser; users can come back to it from the profile menu.
 const START = typeof DEMO!=='undefined' && DEMO;
 const SCENARIOS = [
-  ['both','Camera + AI plan','Has TrueX cameras and AI services. Home shows AI moments first.','sparkles','#7b5cf5'],
-  ['camera','Camera, no AI plan','Has cameras only. Home shows camera moments. AI moments show the AI service offer.','video','#2f7bf5'],
   ['none','No camera, no plan','New to cameras. Home suggests cameras and camera + cloud bundles.','shoppingBag','#f07b2f'],
   ['nofav','No favorites yet','Nothing pinned to Home yet. Home asks the user to add favorites.','homeAdd','#1fbf8a'],
+  ['camera','Camera, no AI plan','Has cameras only. Home shows camera moments. AI moments show the AI service offer.','video','#2f7bf5'],
+  ['both','Camera + AI plan','Has TrueX cameras and AI services. Home shows AI moments first.','sparkles','#7b5cf5'],
 ];
 function renderStart(){
   return `<div class="startpg"><div class="sth"><b>TrueX SuperAPP</b><span>Mock-up Version 2</span></div><h2>Choose a scenario</h2><p>Each one shows the app as a different kind of customer would see it. You can switch any time from the profile menu.</p>
