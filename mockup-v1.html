@@ -2614,7 +2614,8 @@ function renderStart(){
 OVERLAYS.start = renderStart;
 Object.assign(ACT, {
   optSet(v){ const [k,x] = v.split(':'); OPT[k]=x; render(); },
-  startPlan(v){ A = freshApp(v); v5(); if (v==='none'){ Object.keys(DEVICES).forEach(id=>A.removed.add(id)); A.widgets=[]; A.autos=[]; } A.room = OPT.nav==='B' ? 'Favorites' : 'All Devices'; A.chat = v==='none' ? initialChat().slice(0,1) : initialChat(); lastChatLen = A.chat.length; for (const k in scrollMem) delete scrollMem[k]; lastKey=null; render(); },
+  startPlan(v){ A = freshApp(v); v5(); if (v==='none'){ Object.keys(DEVICES).forEach(id=>A.removed.add(id)); A.widgets=[]; A.autos=[]; } A.room = OPT.nav==='B' ? 'Favorites' : 'All Devices'; A.chat = v==='none' ? initialChat().slice(0,1) : v==='camera' ? [initialChat()[0], {who:'me', t:'Turn on the living room air con.'}, {who:'bot', t:'Done. The living room air con is on and set to 25°C.'}] : initialChat();
+    if (v==='camera') A.toggles.aircon = true; lastChatLen = A.chat.length; for (const k in scrollMem) delete scrollMem[k]; lastKey=null; render(); },
 });
 
 // ---------- TrueX service explainers (from the Welcome to TrueX card) ----------
