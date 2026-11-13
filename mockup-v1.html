@@ -2603,8 +2603,8 @@ Object.assign(CAMPAIGNS, {hubspk:{img:'ic_speaker', title:'TrueX Home Hub AI Spe
 // ---------- start screen: design options ----------
 function renderStart(){
   const seg = (k, opts) => `<div class="optseg">${opts.map(([v,l])=>`<button class="${OPT[k]===v?'on':''}" data-a="optSet" data-v="${k}:${v}">${l}</button>`).join('')}</div>`;
-  return `<div class="startpg"><div class="sth"><b>TrueX SuperAPP</b><span>${LOCKED?'Mock-up Version 1':'Mock-up V2 Draft'}</span></div><h2>Choose a scenario</h2><p>Pick the design option and a customer type. You can switch any time from the profile menu.</p>
-    ${LOCKED?'':`<div class="optl">AI Hub shows</div>${seg('hub',[['suggest','Chat suggestions'],['services','AI service shortcuts']])}`}
+  return `<div class="startpg"><div class="sth"><b>TrueX SuperAPP</b><span>${LOCKED?'Mock-up Version 1':'Mock-up V1 Draft'}</span></div><h2>Choose a scenario</h2><p>Pick the design option and a customer type. You can switch any time from the profile menu.</p>
+    <div class="optl">AI Hub shows</div>${seg('hub',[['suggest','Chat suggestions'],['services','AI service options']])}
     <div class="optl">Home favorites</div>${seg('wid',[['slide','Small sliding cards'],['grid','Bigger cards (grid)']])}
     ${LOCKED?'':`<div class="optl">Service page</div>${seg('svc',[['list','Card list'],['tiles','Big tiles (previous)']])}`}
     <div class="optl">Bottom tabs</div>${seg('nav',[['A','Home · AI Hub · Devices · Service'],['B','Home · AI Hub · Scenario · Service']])}
