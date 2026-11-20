@@ -1213,9 +1213,9 @@ const SCREENS = {
   notif_home:{en:'Notifications · Home & Bulletin', th:'การแจ้งเตือน · Home และ Bulletin'},
   nsettings:{en:'Notification settings', th:'ตั้งค่าการแจ้งเตือน'},
   messages:{en:'Messages (For you / Hot Deal / IoT Community)', th:'ข้อความ (For you / Hot Deal / IoT Community)'},
-  album:{en:'Family Album · Cloud Pro AI', th:'อัลบั้มครอบครัว · Cloud Pro AI'},
-  smartfilter:{en:'Cloud Pro AI · Smart Filter', th:'Cloud Pro AI · ตัวกรองอัจฉริยะ'},
-  cp_event:{en:'Cloud Pro AI · Event detail', th:'Cloud Pro AI · รายละเอียดเหตุการณ์'},
+  album:{en:'Family Album · AI Cloud Plus', th:'อัลบั้มครอบครัว · AI Cloud Plus'},
+  smartfilter:{en:'AI Cloud Plus · Smart Filter', th:'AI Cloud Plus · ตัวกรองอัจฉริยะ'},
+  cp_event:{en:'AI Cloud Plus · Event detail', th:'AI Cloud Plus · รายละเอียดเหตุการณ์'},
   pet_app:{en:'AI Pet Care mini-app', th:'มินิแอป AI Pet Care'},
   pet_event:{en:'AI Pet Care · Event playback', th:'AI Pet Care · เล่นวิดีโอเหตุการณ์'},
   sec_app:{en:'AI Security Care mini-app', th:'มินิแอป AI Security Care'},
@@ -1229,7 +1229,7 @@ const SCREENS = {
   service:{en:'Service', th:'Service'},
   tvbox:{en:'TrueID TV Box', th:'TrueID TV Box'},
   helpchat:{en:'Help Chat', th:'Help Chat'},
-  smartcloud:{en:'Cloud Pro AI offer page', th:'หน้าแพ็กเกจ Cloud Pro AI'},
+  smartcloud:{en:'AI Cloud Plus offer page', th:'หน้าแพ็กเกจ AI Cloud Plus'},
 };
 
 // ===== demo data =====
@@ -1240,7 +1240,7 @@ const PLANS = {
   nofav:{en:'New user, no favorites', th:'ผู้ใช้ใหม่ ยังไม่มีรายการโปรด'},
 };
 const SVC = {
-  cloud:{name:'AI Cloud Pro', app:'Cloud Pro AI', icon:'app_cloud', color:'#d396f1', desc:'Smart Family Album: every person, pet, package and vehicle event, kept and searchable.'},
+  cloud:{name:'AI Cloud Plus', app:'AI Cloud Plus', icon:'app_cloud', color:'#d396f1', desc:'Smart Family Album: every person, pet, package and vehicle event, kept and searchable.'},
   security:{name:'AI Security Care', app:'AI Security Care', icon:'app_sec', color:'#c3dd86', desc:'Classifies every event as Critical, Suspicious or Routine with a 24-hour Security Score.'},
   pet:{name:'AI Pet Care', app:'AI Pet Care', icon:'app_pet', color:'#a898fb', desc:'Highlights, daily activity and dangerous-behaviour alerts for your pet.'},
 };
@@ -1460,7 +1460,7 @@ function renderHome(){
     <button class="promo wide2" data-a="campaign" data-v="leak"><img src="${img('promo_leak')}" alt="Water leak sensor set 750 baht"></button></div>`;
   return h + `</div>` + nav();
 }
-const aiTeaser = (fromSeg) => `<div class="upcard slim"><b>Know what happened, not just motion</b><p>Cloud Pro AI tells people, pets and packages apart and keeps every event in your Family Album.</p><div class="row2">${gradBtn('Try Cloud Pro AI','open','smartcloud')}${fromSeg?'':`<button class="txtb" data-a="hideAiCard">Not now</button>`}</div></div>`;
+const aiTeaser = (fromSeg) => `<div class="upcard slim"><b>Know what happened, not just motion</b><p>AI Cloud Plus tells people, pets and packages apart and keeps every event in your Family Album.</p><div class="row2">${gradBtn('Try AI Cloud Plus','open','smartcloud')}${fromSeg?'':`<button class="txtb" data-a="hideAiCard">Not now</button>`}</div></div>`;
 
 // ===== AI HUB =====
 const todaySummary = () => {
@@ -1525,7 +1525,7 @@ function renderService(){
     ['aichat','AI Chat','aichat','#c3dd86'],['digital','Digital Service','cloudgear','#d396f1'],
     ['manual','User Manual','bookopen','#e6838a'],['homemgmt','Home Management','homeplus','#efb565'],
     ['join','Join Home Shortcut','userplus2','#86b9fb'],['pet','AI Pet Care','@app_pet','#a898fb'],
-    ['security','AI Security Care','@app_sec','#c3dd86'],['cloud','Cloud Pro AI','@app_cloud','#d396f1'],
+    ['security','AI Security Care','@app_sec','#c3dd86'],['cloud','AI Cloud Plus','@app_cloud','#d396f1'],
     ['energy','Energy Insight','bolt','#e6838a'],
   ];
   h += `<div class="scroll" data-scroll="service"><div class="tiles" style="margin-top:6px">${S.map(([k,l,i,c])=>`<button class="sc2" style="background:${c}" data-a="svc" data-v="${k}">${i[0]==='@'?`<img src="${img(i.slice(1))}" alt="">`:ic(i)}<b>${l}</b></button>`).join('')}</div>`;
@@ -1564,10 +1564,10 @@ function renderAllMoments(){
   return h + `</div>`;
 }
 
-// ---- Cloud Pro AI (Family Album) ----
+// ---- AI Cloud Plus (Family Album) ----
 function renderAlbum(){
   const al = A.album;
-  let h = `<div class="hdr">${hb('chevL','back','Back')}<span class="ttl">Cloud Pro AI</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','sheet','More','data-v="albummore"')}</div></div>`;
+  let h = `<div class="hdr">${hb('chevL','back','Back')}<span class="ttl">AI Cloud Plus</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','sheet','More','data-v="albummore"')}</div></div>`;
   h += `<div class="scroll" data-scroll="album" style="padding-bottom:96px">`;
   if (al.tab==='album'){
     h += `<div class="rowc"><div class="hscroll chipsrow">${[['pets','10','Pets','bone'],['visitors','7','Visitors','bell'],['pkgs','5','Packages','package']].map(([k,n,l,i])=>`<button class="ecol${al.chip===k?' on':''}" data-a="achip" data-v="${k}">${ic(i)}<b>${n}</b><span>${l}</span></button>`).join('')}</div><button class="hbtn sm" data-a="sheet" data-v="smartfilter" aria-label="Smart Filter">${ic('filter')}</button></div>`;
@@ -1584,7 +1584,7 @@ function renderAlbum(){
 }
 function renderCpEvent(){
   const e = A.cpEvent;
-  return `<div class="hdr">${hb('chevL','back','Back')}<span class="ttl">Cloud Pro AI</span><span style="width:36px"></span></div><div class="scroll" data-scroll="cpevent" style="padding-bottom:110px">
+  return `<div class="hdr">${hb('chevL','back','Back')}<span class="ttl">AI Cloud Plus</span><span style="width:36px"></span></div><div class="scroll" data-scroll="cpevent" style="padding-bottom:110px">
     <div class="player">${playerInner(e.img, e.ts)}</div>
     <div class="evh"><b>${e.cam}</b><small>${e.date}</small></div>
     <div class="disc">Note: Results may be inaccurate due to image quality, camera angle, and lighting conditions during recording.</div>
@@ -1739,8 +1739,8 @@ function renderCamPanel(){
   h += `<div class="scroll" data-scroll="campanel"><div class="live"><img src="${img(c.img)}" alt="Live view, ${c.name}"><span class="badge">● LIVE · 3K</span></div>
   <div class="ctl4">${[['mic','talk','Talk'],['camera','snap','Snapshot'],['video','rec','Record'],['move','ptz','Pan-tilt']].map(([i,key,l])=>`<button class="${k[key]?'on':''}" data-a="camCtl" data-v="${key}"><span>${ic(i)}</span>${l}</button>`).join('')}</div>
   <div class="list">
-    <button data-a="open" data-v="album">${ic('playc')}<span>Playback<small>Cloud Pro AI album</small></span>${ic('chevR')}</button>
-    <button data-a="open" data-v="${A.subs.cloud?'album':'smartcloud'}"><img class="appi sm" src="${img('app_cloud')}" alt=""><span>Cloud Pro AI<small>${A.subs.cloud?'Active on this camera':'Not subscribed'}</small></span>${ic('chevR')}</button>
+    <button data-a="open" data-v="album">${ic('playc')}<span>Playback<small>AI Cloud Plus album</small></span>${ic('chevR')}</button>
+    <button data-a="open" data-v="${A.subs.cloud?'album':'smartcloud'}"><img class="appi sm" src="${img('app_cloud')}" alt=""><span>AI Cloud Plus<small>${A.subs.cloud?'Active on this camera':'Not subscribed'}</small></span>${ic('chevR')}</button>
     <button data-a="toast" data-v="AI alert settings (not part of this prototype)">${ic('bell')}<span>AI Alert settings</span>${ic('chevR')}</button>
   </div></div>`;
   return h;
@@ -1751,7 +1751,7 @@ function renderCampaign(){
     <div class="kv1"><span>Price</span><b>${c.price}</b></div><p class="note3">Content and deep link are managed by TrueX in Strapi.</p>${gradBtn('View offer','toast','Opens the TrueX Store product page (not part of this prototype)')}</div>`;
 }
 function renderSmartCloud(){
-  return back('Cloud Pro AI') + `<div class="scroll" data-scroll="smartcloud"><div class="schero"><b>Cloud Pro AI</b><span>Turn camera alerts into a Family Album you can review, search and keep.</span></div>
+  return back('AI Cloud Plus') + `<div class="scroll" data-scroll="smartcloud"><div class="schero"><b>AI Cloud Plus</b><span>Turn camera alerts into a Family Album you can review, search and keep.</span></div>
     <div class="plan ai"><b>What you get</b><ul><li>7 AI detection types: person, pet, package, vehicle, fire, smoke, camera tampering</li><li>Cloud storage for event videos</li><li>Daily Highlight of yesterday</li><li>Smart Filter by date, camera and type</li></ul>${A.subs.cloud?'<span class="pill-ok">Active</span>':hasCam()?gradBtn('Subscribe Now','doSub','cloud'):'<span class="note3">Needs a TrueX camera</span>'}</div></div>`;
 }
 function renderAddDevice(){
@@ -1937,7 +1937,7 @@ const ACT = {
   camCtl(v){ A.camCtl[v]=!A.camCtl[v]; if(v==='snap'){ A.camCtl.snap=false; toast('Snapshot saved to your phone'); } else render(); },
   mlPage(v){ A.mlPage=Number(v); render(); },
   mlFeat(v){ A.mlFeat[v]=!A.mlFeat[v]; render(); },
-  // album (Cloud Pro AI)
+  // album (AI Cloud Plus)
   achip(v){ A.album.chip = A.album.chip===v ? null : v; if (A.album.chip==='pets') FG.task('album'); render(); },
   albumTab(v){ A.album.tab=v; render(); },
   sfDay(v){ const d=Number(v), al=A.album; if (al.to || d<al.from){ al.from=d; al.to=null; } else al.to=d; render(); },
@@ -2035,7 +2035,7 @@ $phone.addEventListener('pointerdown', ()=>{ lpFired=false; }, true); // a new t
 $phone.addEventListener('pointerdown', e=>{ const w=e.target.closest('[data-lp]'); if(!w) return; lpT=setTimeout(()=>{ lpFired=true; lpAt=Date.now(); if ((A.tab==='devices' || (A.tab==='home' && homeB())) && !cur()) { if (A.room==='Favorites') ACT.favEditStart(); else ACT.devEditStart(w.dataset.lp); } else ACT.openLayout(); }, 600); });
 ['pointerup','pointerleave','pointercancel','pointermove'].forEach(t=>$phone.addEventListener(t, e=>{ if(t==='pointermove' && Math.abs(e.movementY)<3) return; clearTimeout(lpT); }));
 
-// ===== v3.2: Devices (rooms, room settings, edit mode), Camera panel, Cloud Pro AI =====
+// ===== v3.2: Devices (rooms, room settings, edit mode), Camera panel, AI Cloud Plus =====
 Object.assign(P, {
   moveTop:'<path d="M5 3h14M12 21V8M7 12l5-5 5 5"/>',
   moveIc:'<path d="M12 2v20M2 12h20M9 5l3-3 3 3M9 19l3 3 3-3M5 9l-3 3 3 3M19 9l3 3-3 3"/>',
@@ -2147,7 +2147,7 @@ function renderCamPanel(){
     const D = [['motion','Motion Detection','target'],['human','Human Detection','humanR'],['pet','Pet Detection','paw'],['face','Face Detection','face'],['sound','Sound Detection','mic'],['baby','Baby Cry','baby'],['dog','Dog Bark','paw'],['cat','Cat Meow','paw'],['glass','Glass Break','glass'],['tracking','Motion Tracking','radar'],['feature','Feature tracking','target'],['patrol','Patrol','patrol']];
     h += `<div class="sdh"><b>SMART DETECTIONS</b><button class="lnk sm" data-a="toast" data-v="Edit detection list (not part of this prototype)">Edit</button></div><div class="detg">${D.map(([key,l,i])=>`<button class="${A.det[key]?'on':''}" data-a="det" data-v="${key}">${ic(i)}<span>${l}</span></button>`).join('')}</div>
       <div class="detg">${[['siren','Siren','siren',''],['night','Night Vision','moon','Infrared'],['private','Private Mode','eyeoff','']].map(([key,l,i,s])=>`<button class="${A.det[key]?'on':''}" data-a="det" data-v="${key}">${ic(i)}<span>${l}${s?`<small>${s}</small>`:''}</span></button>`).join('')}</div>
-      <div class="aiapps"><button data-a="openSvc" data-v="pet"><img src="${img('app_pet')}" alt=""><span>AI Pet Care</span></button><button data-a="openSvc" data-v="security"><img src="${img('app_sec')}" alt=""><span>AI Security Care</span></button><button data-a="openSvc" data-v="cloud"><img src="${img('app_cloud')}" alt=""><span>Cloud Pro AI</span></button></div>
+      <div class="aiapps"><button data-a="openSvc" data-v="pet"><img src="${img('app_pet')}" alt=""><span>AI Pet Care</span></button><button data-a="openSvc" data-v="security"><img src="${img('app_sec')}" alt=""><span>AI Security Care</span></button><button data-a="openSvc" data-v="cloud"><img src="${img('app_cloud')}" alt=""><span>AI Cloud Plus</span></button></div>
       <div class="sdh"><b>GALLERY</b></div><button class="galrow" data-a="toast" data-v="Saved snapshots and clips on this phone (not part of this prototype)"><span class="gi2">${ic('albumIc')}</span><span><b>Album</b><small>Saved snapshots and clips</small></span>${ic('chevR')}</button>
       <button class="promo" style="width:100%;height:auto;border-radius:16px;display:block;margin-top:12px" data-a="campaign" data-v="cam99"><img src="${img('promo_cloud59')}" alt="Cloud plan 59 baht" style="height:auto"></button>`;
   } else {
@@ -2158,13 +2158,13 @@ function renderCamPanel(){
   return h;
 }
 
-// ---------- Cloud Pro AI (Family Album) ----------
+// ---------- AI Cloud Plus (Family Album) ----------
 const CP_ALBUM = Array.from({length:24},(_,i)=>'cpa'+String(i).padStart(2,'0'));
 const CP_TYPE = i => ['person','person','person','person','pet','vehicle','pet','person','pet','tamper','pet','pet'][i%12];
 function renderAlbum(){
   v4();
   const al = A.album;
-  let h = `<div class="hdr cph"><span class="ttl big">Cloud Pro AI</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','cpMore','More')}${hb('x','back','Close')}</div></div>`;
+  let h = `<div class="hdr cph"><span class="ttl big">AI Cloud Plus</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','cpMore','More')}${hb('x','back','Close')}</div></div>`;
   h += `<div class="scroll" data-scroll="album-${al.tab}" style="padding-bottom:96px">`;
   if (al.tab==='album'){
     const C = [['person','1421','Person','user','#2f7bf5'],['package','672','Package','package','#8e6cf0'],['tamper','241','Camera Tampering','webcam','#1fbf8a']];
@@ -2222,7 +2222,7 @@ Object.assign(P, {
   carIc:'<path d="M5 17h14v-5l-2-5H7l-2 5z"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/>',
   timer:'<circle cx="12" cy="14" r="7"/><path d="M12 10v4l2 2M10 2h4M12 2v3"/>',
 });
-// --- Cloud Pro AI: every clip uses the provided thumbnails; icons match what is in each photo
+// --- AI Cloud Plus: every clip uses the provided thumbnails; icons match what is in each photo
 const CP_DET = {person:['user','#2f7bf5','Person'], pet:['paw','#f0a020','Pet'], package:['package','#8e6cf0','Package'], vehicle:['carIc','#14a3b8','Vehicle'], fire:['fireIc','#e5383b','Fire'], smoke:['smokeIc','#7a7f8a','Smoke'], tamper:['webcam','#1fbf8a','Camera Tampering']};
 const CP_PHOTOS = [
   ['t_pp1',['person','package']], ['t_person',['person']], ['t_pet',['pet']], ['t_vehicle',['vehicle']],
@@ -2235,7 +2235,7 @@ const cpTile = c => `<button data-a="cpClip" data-v="${c.id}"><img src="${img(c.
 function renderAlbum(){
   v4();
   const al = A.album;
-  let h = `<div class="hdr cph"><span class="ttl big">Cloud Pro AI</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','cpMore','More')}${hb('x','back','Close')}</div></div>`;
+  let h = `<div class="hdr cph"><span class="ttl big">AI Cloud Plus</span><div class="hgrp">${hb('checklist','toast','Select','data-v="Select clips to delete (not part of this prototype)"')}${hb('dots','cpMore','More')}${hb('x','back','Close')}</div></div>`;
   h += `<div class="scroll" data-scroll="album-${al.tab}" style="padding-bottom:96px">`;
   if (al.tab==='album'){
     const counts = {person:1421, package:672, pet:388, vehicle:241, tamper:36, smoke:4, fire:2};
@@ -2515,7 +2515,7 @@ function renderHome(){
 
 const addFavPill = () => `<button class="addfav" data-a="addWidget">${ic('plus')}Add favorite</button>`;
 const truexIntro = (nofav) => `<div class="txintro"><div class="txh"><img class="txlogo" src="${img('truex_logo')}" alt="TrueX"><span><b>Welcome to TrueX</b><small>One app for your cameras, smart home and AI services</small></span></div>
-  ${[['video','#2f7bf5','IP cameras','Live view, playback and instant alerts from every TrueX camera.'],['bulb','#f0a020','Smart home control','Lights, plugs, air con and scenes in one place, by room.'],['sparkles','#7a5cf0','AI services for your home','AI Pet Care, AI Security Care and Cloud Pro AI turn video into answers.'],['mic','#e5383b','TrueX Home Hub','An AI speaker with voice AI. Control everything at home just by talking.']].map(([i,c,t,d],n)=>`<button class="txrow" data-a="txInfo" data-v="${['cams','home','ai','hub'][n]}"><span style="background:${c}">${ic(i)}</span><span><b>${t}</b><small>${d}</small></span>${ic('chevR')}</button>`).join('')}
+  ${[['video','#2f7bf5','IP cameras','Live view, playback and instant alerts from every TrueX camera.'],['bulb','#f0a020','Smart home control','Lights, plugs, air con and scenes in one place, by room.'],['sparkles','#7a5cf0','AI services for your home','AI Pet Care, AI Security Care and AI Cloud Plus turn video into answers.'],['mic','#e5383b','TrueX Home Hub','An AI speaker with voice AI. Control everything at home just by talking.']].map(([i,c,t,d],n)=>`<button class="txrow" data-a="txInfo" data-v="${['cams','home','ai','hub'][n]}"><span style="background:${c}">${ic(i)}</span><span><b>${t}</b><small>${d}</small></span>${ic('chevR')}</button>`).join('')}
   <div class="row2">${nofav ? gradBtn('See all devices','allDevices') : gradBtn('Explore TrueX cameras','campaign','cam99')+'<button class="txtb" data-a="open" data-v="adddevice">Add device</button>'}</div></div>`;
 // ---------- AI Hub ----------
 const HUB_SUGGEST = ['It’s so hot. Turn on the bedroom air con.','Turn on the lights in the living room.','How is the PM 2.5 level at home today?','What’s the circumference of a 1-metre circle?'];
@@ -2547,7 +2547,7 @@ function renderService(){
   if (OPT.svc==='tiles' || IS_V2){
     const T = [['helpchat','Help Chat','chat','#86b9fb'],['solutions','TrueX Solutions','wrench','#a898fb'],['aichat','AI Chat','aichat','#c3dd86'],['digital','Digital Service','cloudgear','#d396f1'],
       ['manual','User Manual','bookopen','#e6838a'],['homemgmt','Home Management','homeplus','#efb565'],['join','Join Home Shortcut','userplus2','#86b9fb'],
-      ...(OPT.hub==='suggest' || IS_V2 ? [['pet','AI Pet Care','@app_pet','#a898fb'],['security','AI Security Care','@app_sec','#c3dd86'],['cloud','Cloud Pro AI','@app_cloud','#d396f1']] : []),['energy','Energy Insight','bolt','#e6838a']];
+      ...(OPT.hub==='suggest' || IS_V2 ? [['pet','AI Pet Care','@app_pet','#a898fb'],['security','AI Security Care','@app_sec','#c3dd86'],['cloud','AI Cloud Plus','@app_cloud','#d396f1']] : []),['energy','Energy Insight','bolt','#e6838a']];
     h += `<div class="scroll" data-scroll="service"><div class="tiles" style="margin-top:6px">${T.map(([k,l,i,c])=>`<button class="sc2" style="background:${c}" data-a="svc" data-v="${k}">${i[0]==='@'?`<img src="${img(i.slice(1))}" alt="">`:ic(i)}<b>${l}</b></button>`).join('')}</div>`;
   } else {
   h += `<div class="scroll" data-scroll="service">`;
@@ -2641,8 +2641,8 @@ function renderTxInfo(){
       pts:[['space','Rooms','See and control devices room by room.'],['tag','Tap-to-Run scenes','One tap to turn off every light or set the bedroom for sleep.'],['timer','Automations','Let your home react to time, weather or a door opening.']],
       cta:gradBtn('Add device','open','adddevice')},
     ai:{t:'AI services for your home', c:'#7a5cf0', lead:'Turn camera video into answers about your family, pets and home.',
-      hero:`<div class="txhero ai">${[['app_pet','AI Pet Care','cat_close','Pet yawning · 21:55'],['app_sec','AI Security Care','t_tamper','Camera tampering · Critical'],['app_cloud','Cloud Pro AI','t_pp1','Person + package']].map(([ico,n,im,cap])=>`<div class="txai"><img class="ph" src="${img(im)}" alt=""><span><img src="${img(ico)}" alt=""><b>${n}</b><small>${cap}</small></span></div>`).join('')}</div>`,
-      pts:[['paw','AI Pet Care','Highlights, daily activity and alerts about risky behaviour.'],['shield','AI Security Care','Every event sorted into Critical, Suspicious or Routine.'],['albumIc','Cloud Pro AI','A Family Album that finds people, pets, packages and more.']],
+      hero:`<div class="txhero ai">${[['app_pet','AI Pet Care','cat_close','Pet yawning · 21:55'],['app_sec','AI Security Care','t_tamper','Camera tampering · Critical'],['app_cloud','AI Cloud Plus','t_pp1','Person + package']].map(([ico,n,im,cap])=>`<div class="txai"><img class="ph" src="${img(im)}" alt=""><span><img src="${img(ico)}" alt=""><b>${n}</b><small>${cap}</small></span></div>`).join('')}</div>`,
+      pts:[['paw','AI Pet Care','Highlights, daily activity and alerts about risky behaviour.'],['shield','AI Security Care','Every event sorted into Critical, Suspicious or Routine.'],['albumIc','AI Cloud Plus','A Family Album that finds people, pets, packages and more.']],
       cta:gradBtn('See AI plans','open','smartcloud')},
     hub:{t:'TrueX Home Hub', c:'#e5383b', lead:'An AI speaker with voice AI. Just say what you need.',
       hero:`<div class="txhero hub"><div class="spk"><img src="${img('ic_speaker')}" alt="TrueX Home Hub speaker"><span class="wave"><i></i><i></i><i></i><i></i><i></i></span></div>
@@ -2690,11 +2690,11 @@ const T = {
     saveRate:'Save rating', savedRate:'Saved. Move to another screen to rate it.', ratedLbl:'Screens rated',
     survH:'Final survey', survP:'Answer after you have explored the app.',
     q1:'Overall, is this UI suitable for you?', q1o:['Yes','Maybe','No'],
-    q2:'How easy was it to find what you wanted?', q3:'How much do you like the visual design?', q4:'How useful are the AI features (AI Moments, AI Hub, Cloud Pro AI, Pet Care, Security Care)?', q5:'How likely are you to use this app if it launched?',
+    q2:'How easy was it to find what you wanted?', q3:'How much do you like the visual design?', q4:'How useful are the AI features (AI Moments, AI Hub, AI Cloud Plus, Pet Care, Security Care)?', q5:'How likely are you to use this app if it launched?',
     lo:'1 = Not at all', hi:'5 = Very',
     q6:'Which parts did you like most?', q7:'Which part was most confusing?', parts:['Home','AI Hub','Devices','Service','Family Album','Camera','Notifications','AI mini-apps'], none:'Nothing',
     q10:'Home shows Favorites (big camera view and device cards), then Moments, then Recommended. Is this order right for you?', q10o:['Yes','Partly','No'],
-    q11:'How do you feel about the Cloud Pro AI offer card on Home?', q11o:['Helpful','Neutral','Annoying','Didn’t see it'],
+    q11:'How do you feel about the AI Cloud Plus offer card on Home?', q11o:['Helpful','Neutral','Annoying','Didn’t see it'],
     planL:'Home scenario', planHint:'Set by the facilitator. It changes what Home shows.',
     q8:'What would you change or add?', q9:'Any other comments?',
     submit:'Submit my answers', sending:'Sending…', need:'Please answer question 1 before submitting.',
@@ -2718,11 +2718,11 @@ const T = {
     saveRate:'บันทึกคะแนน', savedRate:'บันทึกแล้ว ไปหน้าจออื่นเพื่อให้คะแนนต่อได้', ratedLbl:'หน้าจอที่ให้คะแนนแล้ว',
     survH:'แบบสอบถามสรุป', survP:'กรุณาตอบหลังจากทดลองใช้แอปแล้ว',
     q1:'โดยรวมแล้ว หน้าตาแอปนี้เหมาะกับคุณหรือไม่', q1o:['เหมาะ','ไม่แน่ใจ','ไม่เหมาะ'],
-    q2:'หาสิ่งที่ต้องการได้ง่ายแค่ไหน', q3:'คุณชอบการออกแบบหน้าตาแค่ไหน', q4:'ฟีเจอร์ AI (AI Moments, AI Hub, Cloud Pro AI, Pet Care, Security Care) มีประโยชน์แค่ไหน', q5:'ถ้าแอปนี้เปิดตัว คุณมีแนวโน้มจะใช้แค่ไหน',
+    q2:'หาสิ่งที่ต้องการได้ง่ายแค่ไหน', q3:'คุณชอบการออกแบบหน้าตาแค่ไหน', q4:'ฟีเจอร์ AI (AI Moments, AI Hub, AI Cloud Plus, Pet Care, Security Care) มีประโยชน์แค่ไหน', q5:'ถ้าแอปนี้เปิดตัว คุณมีแนวโน้มจะใช้แค่ไหน',
     lo:'1 = น้อยที่สุด', hi:'5 = มากที่สุด',
     q6:'ส่วนไหนที่คุณชอบที่สุด', q7:'ส่วนไหนที่ทำให้สับสนที่สุด', parts:['หน้าแรก','AI Hub','Devices','Service','อัลบั้มครอบครัว','กล้อง','การแจ้งเตือน','มินิแอป AI'], none:'ไม่มี',
     q10:'หน้าแรกเรียงเป็น รายการโปรด (ภาพกล้องขนาดใหญ่และการ์ดอุปกรณ์) แล้วจึงเป็น Moments และรายการแนะนำ ลำดับนี้เหมาะกับคุณหรือไม่', q10o:['เหมาะ','บางส่วน','ไม่เหมาะ'],
-    q11:'คุณรู้สึกอย่างไรกับการ์ดแนะนำ Cloud Pro AI บนหน้าแรก', q11o:['มีประโยชน์','เฉยๆ','น่ารำคาญ','ไม่เห็น'],
+    q11:'คุณรู้สึกอย่างไรกับการ์ดแนะนำ AI Cloud Plus บนหน้าแรก', q11o:['มีประโยชน์','เฉยๆ','น่ารำคาญ','ไม่เห็น'],
     planL:'สถานการณ์หน้าแรก', planHint:'ผู้ดำเนินการเป็นผู้ตั้งค่า มีผลต่อสิ่งที่แสดงในหน้าแรก',
     q8:'อยากให้เปลี่ยนหรือเพิ่มอะไร', q9:'ความคิดเห็นอื่นๆ',
     submit:'ส่งคำตอบ', sending:'กำลังส่ง…', need:'กรุณาตอบข้อ 1 ก่อนส่ง',
