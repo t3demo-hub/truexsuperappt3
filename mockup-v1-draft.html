@@ -1040,6 +1040,15 @@ button.txrow>svg.i{margin-left:auto;width:16px;height:16px;color:#a0a0a8;flex:no
 .svc2 .svi.sm{width:36px;height:36px;border-radius:10px;margin-bottom:6px}.svc2 .svi.sm svg.i{width:19px;height:19px}
 .svc2 b{font-size:13.5px;line-height:1.25}.svc2 small{font-size:11.5px;color:#6a6a72;line-height:1.35}
 .txrow>span:nth-child(2){display:flex;flex-direction:column;gap:1px;flex:1}
+
+.aishelf{display:flex;gap:10px;overflow-x:auto;padding:2px 4px 6px;margin:0 -4px 4px;scrollbar-width:none}.aishelf::-webkit-scrollbar{display:none}
+.aisq{flex:0 0 84px;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;font:inherit;color:#1d1b24;cursor:pointer}
+.aisqi{position:relative;width:72px;height:72px;border-radius:20px;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(80,40,120,.08)}
+.aisqi img{width:56px;height:56px;border-radius:15px}
+.aisqi em{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-style:normal;font-size:9px;font-weight:700;color:#fff;background:linear-gradient(90deg,#8b3fe8,#f0457a);border-radius:999px;padding:2px 6px;white-space:nowrap}
+.aisqi.plus{border:1.5px dashed #c9b6e6;background:#fbf8ff}.aisqi.plus svg.i{width:26px;height:26px;color:#7b3fe4}
+.aisq b{font-size:11.5px;font-weight:700;text-align:center;line-height:1.2}
+.dlabel.hubsec{margin-top:10px}
 </style>
 
 <div class="shell">
@@ -2518,10 +2527,8 @@ function renderAI(){
   h += `<div class="scroll" data-scroll="chat" style="padding-bottom:170px">`;
   if (!svcMode){
     h += `<div class="sugg"><div class="sgh">TrueX Home Hub Suggestions</div>${(A.plan==='none'?HUB_SUGGEST_NEW:HUB_SUGGEST).map(t=>`<button class="sgp" data-a="aiSuggest" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div>`;
-  } else if (!A.hubCollapsed){
-    h += `<div class="svcent">${['pet','security','cloud'].map(k=>`<button class="sve" data-a="${A.subs[k]?'openSvc':'askSub'}" data-v="${k}"><img src="${img(SVC[k].icon)}" alt=""><span><b>${SVC[k].app}</b><small>${SVC_DESC[k]}</small></span>${A.subs[k]?ic('chevR'):'<em class="subtag">Subscribe</em>'}</button>`).join('')}</div>`;
   } else {
-    h += `<button class="svcmini" data-a="hubExpand" aria-label="Show AI services">${['pet','security','cloud'].map(k=>`<img src="${img(SVC[k].icon)}" alt="">`).join('')}<span>AI services</span>${ic('chevD')}</button>`;
+    h += aiShelf() + `<div class="dlabel sm2 hubsec">TrueX Home Hub</div>`;
   }
   h += `<div class="msgs">` + A.chat.map(renderMsg).join('');
   if (A.typing) h += `<div class="bub bot"><div class="typing"><i></i><i></i><i></i></div></div>`;
@@ -2597,7 +2604,7 @@ function renderHubIntro(svcMode){
   const save = A.txInfo; A.txInfo = 'hub';
   const inner = renderTxInfo().replace(/^<div class="hdr">[\s\S]*?<\/div><\/div>/, '').replace('data-a="back">Not now','data-a="tab" data-v="home">Not now');
   A.txInfo = save;
-  h += inner.replace('<div class="scroll" data-scroll="txinfo-hub">', `<div class="scroll" data-scroll="hubintro" style="padding-bottom:110px">${svcMode?`<div class="svcent">${['pet','security','cloud'].map(k=>`<button class="sve" data-a="${A.subs[k]?'openSvc':'askSub'}" data-v="${k}"><img src="${img(SVC[k].icon)}" alt=""><span><b>${SVC[k].app}</b><small>${SVC_DESC[k]}</small></span>${A.subs[k]?ic('chevR'):'<em class="subtag">Subscribe</em>'}</button>`).join('')}</div>`:''}`);
+  h += inner.replace('<div class="scroll" data-scroll="txinfo-hub">', `<div class="scroll" data-scroll="hubintro" style="padding-bottom:110px">${svcMode?aiShelf()+`<div class="dlabel sm2 hubsec">TrueX Home Hub</div>`:''}`);
   return h + nav();
 }
 Object.assign(CAMPAIGNS, {hubspk:{img:'ic_speaker', title:'TrueX Home Hub AI Speaker', price:'Available at True Shop', body:'An AI speaker with voice AI. Control lights, air con, plugs and scenes by voice, and ask about your cameras, pets and alerts. Unlocks AI Hub in the TrueX app.'}});
@@ -2658,6 +2665,12 @@ function momentsBlock(){
   if (!list.length) h += `<div class="empty">No moments match this filter.</div>`;
   list.slice(0,2).forEach(m => h += momentRow(m, ai));
   return h + `<button class="seeall" data-a="seeAll" data-v="${ai?'ai':'camera'}">${ai?'See all AI moments':'See all camera moments'} ${ic('chevR')}</button>`;
+}
+
+// AI Hub (AI service options): compact AI Services shelf with square logos and a + tile for all AI plans
+function aiShelf(){
+  const t = k => `<button class="aisq" data-a="${A.subs[k]?'openSvc':'askSub'}" data-v="${k}"><span class="aisqi"><img src="${img(SVC[k].icon)}" alt="">${A.subs[k]?'':'<em>Subscribe</em>'}</span><b>${SVC[k].app}</b></button>`;
+  return `<div class="dlabel sm2">AI Services</div><div class="aishelf hscroll">${['pet','security','cloud'].map(t).join('')}<button class="aisq" data-a="txInfo" data-v="ai" aria-label="All AI services and plans"><span class="aisqi plus">${ic('plus')}</span><b>More AI services</b></button></div>`;
 }
 
 // ===== focus-group panel =====
