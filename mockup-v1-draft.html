@@ -1049,6 +1049,7 @@ button.txrow>svg.i{margin-left:auto;width:16px;height:16px;color:#a0a0a8;flex:no
 .aisqi.plus{border:1.5px dashed #c9b6e6;background:#fbf8ff}.aisqi.plus svg.i{width:26px;height:26px;color:#7b3fe4}
 .aisq b{font-size:11.5px;font-weight:700;text-align:center;line-height:1.2}
 .dlabel.hubsec{margin-top:10px}
+.scroll .nohub{margin:12px 0 2px}
 </style>
 
 <div class="shell">
@@ -2599,11 +2600,12 @@ ACT.tab = v => { clearInterval(listenT); A.listen=null; _tab(v); };
 
 function renderHubIntro(svcMode){
   const body = renderTxInfo().replace(/^<div class="hdr">[\s\S]*?<\/div><\/div>/, '').replace('data-a="back">Not now','data-a="tab" data-v="home">Not now');
-  let h = `<div class="hdr"><span class="ttl big">AI Hub</span><span></span></div><div class="nohub"><b>You don’t have a TrueX Home Hub yet</b><small>AI Hub works with the TrueX Home Hub AI speaker. Here’s what it can do.</small></div>`;
+  const nohub = `<div class="nohub"><b>You don’t have a TrueX Home Hub yet</b><small>AI Hub works with the TrueX Home Hub AI speaker. Here’s what it can do.</small></div>`;
+  let h = `<div class="hdr"><span class="ttl big">AI Hub</span><span></span></div>` + (svcMode ? '' : nohub);
   const save = A.txInfo; A.txInfo = 'hub';
   const inner = renderTxInfo().replace(/^<div class="hdr">[\s\S]*?<\/div><\/div>/, '').replace('data-a="back">Not now','data-a="tab" data-v="home">Not now');
   A.txInfo = save;
-  h += inner.replace('<div class="scroll" data-scroll="txinfo-hub">', `<div class="scroll" data-scroll="hubintro" style="padding-bottom:110px">${svcMode?aiShelf()+`<div class="dlabel sm2 hubsec">TrueX Home Hub</div>`:''}`);
+  h += inner.replace('<div class="scroll" data-scroll="txinfo-hub">', `<div class="scroll" data-scroll="hubintro" style="padding-bottom:110px">${svcMode?aiShelf()+nohub+`<div class="dlabel sm2 hubsec">TrueX Home Hub</div>`:''}`);
   return h + nav();
 }
 Object.assign(CAMPAIGNS, {hubspk:{img:'ic_speaker', title:'TrueX Home Hub AI Speaker', price:'Available at True Shop', body:'An AI speaker with voice AI. Control lights, air con, plugs and scenes by voice, and ask about your cameras, pets and alerts. Unlocks AI Hub in the TrueX app.'}});
