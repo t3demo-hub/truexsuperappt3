@@ -2490,7 +2490,8 @@ const homeHeader = () => { const n = A.plan==='none' ? 0 : unread(); return `<di
     <div class="hgrp tight">${hb('image','open','Family Album','data-v="album"')}${hb('grid4','open','Multi-Live View','data-v="multilive"')}
     <button class="hbtn bell" data-a="openNotif" aria-label="Notifications, ${n} unread">${ic('bell')}${n?`<span class="badge2">${n}</span>`:''}</button>${hb('plus','sheet','Add','data-v="plus"')}</div></div>`; };
 function renderHome(){
-  if (OPT.nav==='B'){
+  // Version 2 with the Scenario tab: Favorites view keeps the Version 2 Home (sliding favorites + moments); All Devices / rooms use the device list
+  if (OPT.nav==='B' && !(IS_V2 && (A.room==='Favorites' || !A.room) && !A.devEdit && !A.sceneEdit && !A.favEdit)){
     // 4-tab variant: Home = AI bar + Favorites, All Devices and rooms
     if (!['Favorites','All Devices',...ROOMS.slice(1)].includes(A.room)) A.room='Favorites';
     const d = renderDevices();
@@ -2545,7 +2546,7 @@ ACT.clearChat = v => { A.hubCollapsed = false; _clearChat ? _clearChat(v) : (A.c
 function renderService(){
   let h = `<div class="hdr"><span class="ttl big">TrueX Services</span><button class="hbtn tvb" data-a="open" data-v="tvbox" aria-label="TrueID TV Box"><img src="${img('app_trueid')}" alt=""></button></div>`;
   const row = (k,l,i,d,tag) => `<button class="sve" data-a="svc" data-v="${k}">${i[0]==='@'?`<img src="${img(i.slice(1))}" alt="">`:`<span class="svi">${ic(i)}</span>`}<span><b>${l}</b><small>${d}</small></span>${tag||ic('chevR')}</button>`;
-  if (OPT.svc==='tiles' || IS_V2){
+  if (OPT.svc==='tiles' || (IS_V2 && !IS_UC)){
     const T = [['helpchat','Help Chat','chat','#86b9fb'],['solutions','TrueX Solutions','wrench','#a898fb'],['aichat','AI Chat','aichat','#c3dd86'],['digital','Digital Service','cloudgear','#d396f1'],
       ['manual','User Manual','bookopen','#e6838a'],['homemgmt','Home Management','homeplus','#efb565'],['join','Join Home Shortcut','userplus2','#86b9fb'],
       ...(OPT.hub==='suggest' || IS_V2 ? [['pet','AI Pet Care','@app_pet','#a898fb'],['security','AI Security Care','@app_sec','#c3dd86'],['cloud','AI Cloud Plus','@app_cloud','#d396f1']] : []),['energy','Energy Insight','bolt','#e6838a']];
@@ -2597,7 +2598,7 @@ sendChat = function(text){
 const _scSave = ACT.scSave;
 ACT.scSave = () => { _scSave(); if (OPT.nav==='B'){ A.tab='home'; render(); } };
 const _tab = ACT.tab;
-ACT.tab = v => { clearInterval(listenT); A.listen=null; _tab(v); };
+ACT.tab = v => { clearInterval(listenT); A.listen=null; if (IS_V2 && OPT.nav==='B' && v==='home' && A.tab!=='home') A.room='Favorites'; _tab(v); };
 
 function renderHubIntro(svcMode){
   const body = renderTxInfo().replace(/^<div class="hdr">[\s\S]*?<\/div><\/div>/, '').replace('data-a="back">Not now','data-a="tab" data-v="home">Not now');
