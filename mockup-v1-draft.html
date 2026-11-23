@@ -1817,7 +1817,7 @@ function renderSheet(){
     return `<div class="ov" data-a="closeSheet"></div><div class="menu v3" role="dialog" aria-label="Profile menu">
     <button class="mi" style="font-size:16px;font-weight:900;margin-bottom:6px" data-a="toast" data-v="Switch home (not part of this prototype)">Sweet Home ${ic('chevD')}</button>
     ${M.map(([i,l,go])=>`<button class="mi" data-a="${go?'open':'toast'}" data-v="${go||l+' (not part of this prototype)'}"><span class="mii">${i[0]==='@'?`<img src="${img(i.slice(1))}" alt="">`:ic(i)}</span><span class="mil">${l}</span>${ic('chevR')}</button>`).join('')}
-    ${typeof START!=='undefined' && START ? `<button class="mi swap" data-a="startOver"><span class="mii">${ic('refresh')}</span><span class="mil">Switch demo scenario</span>${ic('chevR')}</button>` : ''}
+    ${typeof START!=='undefined' && START ? `<button class="mi swap" data-a="startOver"><span class="mii">${ic('refresh')}</span><span class="mil">Switch demo use case</span>${ic('chevR')}</button>` : ''}
     <div style="text-align:center;font-size:9px;color:#666;margin-top:8px">v5.0</div></div>`; }
   if (s==='plus') return `<div class="ov clear" data-a="closeSheet"></div><div class="pop"><button data-a="open" data-v="adddevice">${ic('plus')}Add Device</button><button data-a="open" data-v="createscene">${ic('tag')}Create Scene</button><button data-a="toast" data-v="QR scanner (not part of this prototype)">${ic('scan')}Scan</button></div>`;
   if (s==='albummore') return `<div class="ov clear" data-a="closeSheet"></div><div class="pop">${[['gear','Settings'],['refresh','Reload'],['bell','AI Alert'],['plus','Subscribe More']].map(([i,l])=>`<button data-a="${l==='Subscribe More'?'open':'toast'}" data-v="${l==='Subscribe More'?'smartcloud':l+' (not part of this prototype)'}">${ic(i)}${l}</button>`).join('')}</div>`;
@@ -2422,7 +2422,9 @@ $phone.addEventListener('scroll', e=>{ const sc=e.target; if(!sc.classList || !s
 // Demo options chosen on the start screen (kept when switching customer scenario)
 const OPT = {hub:'suggest', nav:'A', wid:'slide', spk:'yes', svc:'list'};
 const LOCKED = typeof FINAL!=='undefined' && FINAL;
-const IS_V2 = typeof V2BUILD!=='undefined' && V2BUILD; // Mock-up Version 2: same as V1 plus AI/camera moments on Home and the big-tile Service page // final Mock-up Version 2: chat suggestions + card list only
+const IS_V2 = typeof V2BUILD!=='undefined' && V2BUILD;
+const IS_UC = typeof UCBUILD!=='undefined' && UCBUILD; // use-case build: fixed design (AI service options, Scenario tab, sliding favorites, card-list Service); menu switches use cases only
+if (IS_UC) Object.assign(OPT, {hub:'services', nav:'B', wid:'slide', svc:'list'}); // Mock-up Version 2: same as V1 plus AI/camera moments on Home and the big-tile Service page // final Mock-up Version 2: chat suggestions + card list only
 const hasSpeaker = () => OPT.spk==='yes' && A.plan!=='none' && !(A.removed && A.removed.has('speaker'));
 const homeB = () => OPT.nav==='B' && A.tab==='home';
 const devTabs = () => homeB() ? ['Favorites','All Devices',...ROOMS.slice(1)] : ['All Devices',...ROOMS.slice(1)];
@@ -2608,13 +2610,13 @@ Object.assign(CAMPAIGNS, {hubspk:{img:'ic_speaker', title:'TrueX Home Hub AI Spe
 // ---------- start screen: design options ----------
 function renderStart(){
   const seg = (k, opts) => `<div class="optseg">${opts.map(([v,l])=>`<button class="${OPT[k]===v?'on':''}" data-a="optSet" data-v="${k}:${v}">${l}</button>`).join('')}</div>`;
-  return `<div class="startpg"><div class="sth"><b>TrueX SuperAPP</b><span>${LOCKED?(IS_V2?'Mock-up Version 2':'Mock-up Version 1'):(IS_V2?'Mock-up V2 Draft':'Mock-up V1 Draft')}</span></div><h2>Choose a scenario</h2><p>Pick the design option and a customer type. You can switch any time from the profile menu.</p>
-    <div class="optl">AI Hub shows</div>${seg('hub',[['suggest','Chat suggestions'],['services','AI service options']])}
+  return `<div class="startpg"><div class="sth"><b>TrueX SuperAPP</b><span>${LOCKED?(IS_V2?'Mock-up Version 2':'Mock-up Version 1'):(IS_V2?'Mock-up V2 Draft':'Mock-up V1 Draft')}</span></div><h2>Choose a use case</h2><p>${IS_UC?'Each use case shows the app as a different kind of customer would see it. You can switch any time from the profile menu.':'Pick the design option and a customer type. You can switch any time from the profile menu.'}</p>
+    ${IS_UC?'':`<div class="optl">AI Hub shows</div>${seg('hub',[['suggest','Chat suggestions'],['services','AI service options']])}
     <div class="optl">Home favorites</div>${seg('wid',[['slide','Small sliding cards'],['grid','Bigger cards (grid)']])}
     ${LOCKED||IS_V2?'':`<div class="optl">Service page</div>${seg('svc',[['list','Card list'],['tiles','Big tiles (previous)']])}`}
     <div class="optl">Bottom tabs</div>${seg('nav',[['A','Home · AI Hub · Devices · Service'],['B','Home · AI Hub · Scenario · Service']])}
-    <div class="optl" style="margin-top:14px">Customer</div>
-    ${SCENARIOS.map(([k,t,d,i,c],n)=>`<button class="stc" data-a="startPlan" data-v="${k}"><span class="sti" style="background:${c}">${ic(P[i]?i:'sparkles')}</span><span><small>Scenario ${n+1}</small><b>${t}</b><em>${d.replace(' Home shows AI moments first.','').replace(' Home shows camera moments. AI moments show the AI service offer.',' AI Hub offers the AI services.')}</em></span>${ic('chevR')}</button>`).join('')}</div>`;
+    `}<div class="optl" style="margin-top:14px">${IS_UC?'Use cases':'Customer'}</div>
+    ${SCENARIOS.map(([k,t,d,i,c],n)=>`<button class="stc" data-a="startPlan" data-v="${k}"><span class="sti" style="background:${c}">${ic(P[i]?i:'sparkles')}</span><span><small>Use case ${n+1}</small><b>${t}</b><em>${d.replace(' Home shows AI moments first.','').replace(' Home shows camera moments. AI moments show the AI service offer.',' AI Hub offers the AI services.')}</em></span>${ic('chevR')}</button>`).join('')}</div>`;
 }
 OVERLAYS.start = renderStart;
 Object.assign(ACT, {
@@ -2976,6 +2978,7 @@ function fitPhone(){
 }
 addEventListener('resize', fitPhone);
 if (DEMO) document.body.classList.add('demo');
+if (typeof IS_UC!=='undefined' && IS_UC) ACT.startPlan('both');
 fitPhone(); render(); renderPanel(); route();
 if (!DEMO && innerWidth<=820 && location.hash!=='#results') openPanelMobile();
 if (DEMO) showAlertSoon();
