@@ -1047,6 +1047,9 @@ button.txrow>svg.i{margin-left:auto;width:16px;height:16px;color:#a0a0a8;flex:no
 .aisqi.plus{border:1.5px dashed #c9b6e6;background:#fbf8ff}.aisqi.plus svg.i{width:26px;height:26px;color:#7b3fe4}
 .aisq b{font-size:11.5px;font-weight:700;text-align:center;line-height:1.2}
 .dlabel.hubsec{margin-top:10px}
+
+.txcap{font-size:12.5px;font-weight:700;color:#6b6475;margin:14px 2px 6px}.txslides{margin-bottom:6px}
+.hometabs{margin-top:4px}
 </style>
 
 <div class="shell">
@@ -2500,8 +2503,14 @@ function renderHome(){
   let h = homeHeader();
   h += `<div class="scroll" data-scroll="home"><div class="aiwrap in">${aiBar('home')}</div>`;
   {
+    if (IS_V2 && OPT.nav==='B'){
+      // Version 2: no Devices tab, so Favorites, All Devices and every room are tabs on Home (same as Version 1)
+      h += `<div class="rtabs v4 hometabs"><div class="rtl">${devTabs().map(r=>`<button data-a="room" data-v="${r}" class="${(A.room||'Favorites')===r?'on':''}">${r}</button>`).join('')}</div><button class="rdd" data-a="sheet" data-v="rooms" aria-label="All rooms">${ic('chevD')}</button></div>`;
+      h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') + `<div style="text-align:center;margin-top:12px"><button class="pillb sm" data-a="favEditStart">Edit</button></div>` : addFavPill() + truexIntro(A.plan!=='none');
+    } else {
     h += `<div class="sec favh"><div class="favtabs"><h3>Favorites</h3><button class="favtab" data-a="allDevices">All Devices</button></div>${A.widgets.length?`<button class="editic" data-a="openLayout" aria-label="Edit favorites">${ic('pencil')}</button>`:''}</div>`;
     h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') : addFavPill() + truexIntro(A.plan!=='none');
+    }
   }
   if (IS_V2 && hasCam()) h += momentsBlock();
   // one upselling shelf only
@@ -2637,7 +2646,7 @@ function renderTxInfo(){
       pts:[['video','Live view and two-way talk','Watch in HD and talk to whoever is at home.'],['playc','Playback and cloud','Look back at any moment, saved safely in the cloud.'],['bell','Instant alerts','Motion, sound and person alerts the moment they happen.']],
       cta:gradBtn('Explore TrueX cameras','campaign','cam99')},
     home:{t:'Smart home control', c:'#f0a020', lead:'Every light, plug and air con in one app, sorted by room.',
-      hero:`<div class="txhero grid">${tile('prod_aircon','Air Con','Living Room · 25°C')}${tile('plug','Smart Plug','Living Room',true)}${tile('strip','Light strip','Bedroom',false)}${tile('prod_ir','Smart IR','Living Room')}<div class="txd scene"><span>${ic('tag')}</span><b>Turn off all lights</b><small>Tap-to-Run</small></div><div class="txd scene b"><span>${ic('timer')}</span><b>Prepare to sleep</b><small>Every day 22:30</small></div></div>`,
+      hero:`<div class="txhero grid">${tile('prod_aircon','Air Con','Living Room · 25°C')}${tile('plug','Smart Plug','Living Room',true)}${tile('strip','Light strip','Bedroom',false)}${tile('prod_ir','Smart IR','Living Room')}<div class="txd scene"><span>${ic('tag')}</span><b>Turn off all lights</b><small>Tap-to-Run</small></div><div class="txd scene b"><span>${ic('timer')}</span><b>Prepare to sleep</b><small>Every day 22:30</small></div></div><p class="txcap">Small widgets slide on Home for quick control</p><div class="hscroll slides txslides">${['sc_off','plug','aircon','dream','ir','sc_sleep'].map(slideCard).join('')}</div>`,
       pts:[['space','Rooms','See and control devices room by room.'],['tag','Tap-to-Run scenes','One tap to turn off every light or set the bedroom for sleep.'],['timer','Automations','Let your home react to time, weather or a door opening.']],
       cta:gradBtn('Add device','open','adddevice')},
     ai:{t:'AI services for your home', c:'#7a5cf0', lead:'Turn camera video into answers about your family, pets and home.',
