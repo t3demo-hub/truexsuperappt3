@@ -1050,6 +1050,8 @@ button.txrow>svg.i{margin-left:auto;width:16px;height:16px;color:#a0a0a8;flex:no
 
 .txcap{font-size:12.5px;font-weight:700;color:#6b6475;margin:14px 2px 6px}.txslides{margin-bottom:6px}
 .hometabs{margin-top:4px}
+
+.editrow{text-align:center;margin:8px 0 2px}.editmini{border:0;background:#ece6f1;color:#4a4257;border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer}.editmini svg.i{width:12px;height:12px}
 </style>
 
 <div class="shell">
@@ -2492,7 +2494,7 @@ const homeHeader = () => { const n = A.plan==='none' ? 0 : unread(); return `<di
     <button class="hbtn bell" data-a="openNotif" aria-label="Notifications, ${n} unread">${ic('bell')}${n?`<span class="badge2">${n}</span>`:''}</button>${hb('plus','sheet','Add','data-v="plus"')}</div></div>`; };
 function renderHome(){
   // Version 2 with the Scenario tab: Favorites view keeps the Version 2 Home (sliding favorites + moments); All Devices / rooms use the device list
-  if (OPT.nav==='B' && !(IS_V2 && (A.room==='Favorites' || !A.room) && !A.devEdit && !A.sceneEdit && !A.favEdit)){
+  if (OPT.nav==='B' && !((IS_V2||IS_UC) && (A.room==='Favorites' || !A.room) && !A.devEdit && !A.sceneEdit && !A.favEdit)){
     // 4-tab variant: Home = AI bar + Favorites, All Devices and rooms
     if (!['Favorites','All Devices',...ROOMS.slice(1)].includes(A.room)) A.room='Favorites';
     const d = renderDevices();
@@ -2502,16 +2504,17 @@ function renderHome(){
   let h = homeHeader();
   h += `<div class="scroll" data-scroll="home"><div class="aiwrap in">${aiBar('home')}</div>`;
   {
-    if (IS_V2 && OPT.nav==='B'){
+    if ((IS_V2||IS_UC) && OPT.nav==='B'){
       // Version 2: no Devices tab, so Favorites, All Devices and every room are tabs on Home (same as Version 1)
       h += `<div class="rtabs v4 hometabs"><div class="rtl">${devTabs().map(r=>`<button data-a="room" data-v="${r}" class="${(A.room||'Favorites')===r?'on':''}">${r}</button>`).join('')}</div><button class="rdd" data-a="sheet" data-v="rooms" aria-label="All rooms">${ic('chevD')}</button></div>`;
-      h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') + `<div style="text-align:center;margin-top:12px"><button class="pillb sm" data-a="favEditStart">Edit</button></div>` : addFavPill() + truexIntro(A.plan!=='none');
+      h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') + `<div class="editrow"><button class="editmini" data-a="favEditStart">${ic('pencil')}Edit</button></div>` : addFavPill() + truexIntro(A.plan!=='none');
     } else {
     h += `<div class="sec favh"><div class="favtabs"><h3>Favorites</h3><button class="favtab" data-a="allDevices">All Devices</button></div>${A.widgets.length?`<button class="editic" data-a="openLayout" aria-label="Edit favorites">${ic('pencil')}</button>`:''}</div>`;
     h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') : addFavPill() + truexIntro(A.plan!=='none');
     }
   }
-  if (IS_V2 && hasCam()) h += momentsBlock();
+  if ((IS_V2 || (IS_UC && OPT.nav==='B')) && hasCam()) h += momentsBlock();
+  if ((IS_V2||IS_UC) && OPT.nav==='B') return h + `</div>` + nav(); // fixed-design Home: no Recommended banner section
   // one upselling shelf only
   const R = A.plan==='none'
     ? [['reco'],['c399','promo_399','sq','TrueX smart camera 399 baht'],['b895','promo_895','sq','Cube QHD camera with 12 months cloud 895 baht'],['p5pro','promo_5pro','wide2','TrueX Smart Camera 5PRO AI 1,290 baht']]
@@ -2605,7 +2608,7 @@ sendChat = function(text){
 const _scSave = ACT.scSave;
 ACT.scSave = () => { _scSave(); if (OPT.nav==='B'){ A.tab='home'; render(); } };
 const _tab = ACT.tab;
-ACT.tab = v => { clearInterval(listenT); A.listen=null; if (IS_V2 && OPT.nav==='B' && v==='home' && A.tab!=='home') A.room='Favorites'; _tab(v); };
+ACT.tab = v => { clearInterval(listenT); A.listen=null; if ((IS_V2||IS_UC) && OPT.nav==='B' && v==='home' && A.tab!=='home') A.room='Favorites'; _tab(v); };
 
 function renderHubIntro(svcMode){
   const body = renderTxInfo().replace(/^<div class="hdr">[\s\S]*?<\/div><\/div>/, '').replace('data-a="back">Not now','data-a="tab" data-v="home">Not now');
