@@ -1052,6 +1052,8 @@ button.txrow>svg.i{margin-left:auto;width:16px;height:16px;color:#a0a0a8;flex:no
 .hometabs{margin-top:4px}
 
 .editrow{text-align:center;margin:8px 0 2px}.editmini{border:0;background:#ece6f1;color:#4a4257;border-radius:999px;padding:4px 11px;font:inherit;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer}.editmini svg.i{width:12px;height:12px}
+
+.sqslides{display:flex;gap:10px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:none}.sqslides::-webkit-scrollbar{display:none}.sqslides>.wd{flex:0 0 44%;scroll-snap-align:start}
 </style>
 
 <div class="shell">
@@ -2507,7 +2509,7 @@ function renderHome(){
     if ((IS_V2||IS_UC) && OPT.nav==='B'){
       // Version 2: no Devices tab, so Favorites, All Devices and every room are tabs on Home (same as Version 1)
       h += `<div class="rtabs v4 hometabs"><div class="rtl">${devTabs().map(r=>`<button data-a="room" data-v="${r}" class="${(A.room||'Favorites')===r?'on':''}">${r}</button>`).join('')}</div><button class="rdd" data-a="sheet" data-v="rooms" aria-label="All rooms">${ic('chevD')}</button></div>`;
-      h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') + `<div class="editrow"><button class="editmini" data-a="favEditStart">${ic('pencil')}Edit</button></div>` : addFavPill() + truexIntro(A.plan!=='none');
+      h += A.widgets.length ? (IS_V2 ? favRows(A.widgets, true) : favSquareSlides(A.widgets)) + `<div class="editrow"><button class="editmini" data-a="favEditStart">${ic('pencil')}Edit</button></div>` : addFavPill() + truexIntro(A.plan!=='none');
     } else {
     h += `<div class="sec favh"><div class="favtabs"><h3>Favorites</h3><button class="favtab" data-a="allDevices">All Devices</button></div>${A.widgets.length?`<button class="editic" data-a="openLayout" aria-label="Edit favorites">${ic('pencil')}</button>`:''}</div>`;
     h += A.widgets.length ? favRows(A.widgets, OPT.wid==='slide') : addFavPill() + truexIntro(A.plan!=='none');
@@ -2683,6 +2685,15 @@ function momentsBlock(){
 function aiShelf(){
   const t = k => `<button class="aisq" data-a="${A.subs[k]?'openSvc':'askSub'}" data-v="${k}"><span class="aisqi"><img src="${img(SVC[k].icon)}" alt="">${A.subs[k]?'':'<em>Subscribe</em>'}</span><b>${SVC[k].app}</b></button>`;
   return `<div class="dlabel sm2">AI Services</div><div class="aishelf hscroll">${['pet','security','cloud'].map(t).join('')}<button class="aisq" data-a="txInfo" data-v="ai" aria-label="All AI services and plans"><span class="aisqi plus">${ic('plus')}</span><b>More AI services</b></button></div>`;
+}
+
+// Version 1 Home: camera live views slide as before; device and scene widgets stay square but slide sideways
+function favSquareSlides(ids){
+  const cams = favCams(ids), rest = ids.filter(id=>DEVICES[id] && !isBig(id) && (hasCam() || DEVICES[id].kind!=='camera'));
+  let h = '';
+  if (cams.length===1) h += `<div class="wgrid v3 home1">${wCard(cams[0],false)}</div>`;
+  else if (cams.length>1) h += `<div class="hscroll camslides">${cams.map(id=>wCard(id,false)).join('')}</div><div class="dots2">${cams.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>`;
+  return h + `<div class="hscroll sqslides">${rest.map(id=>wCard(id,false)).join('')}<button class="wd sm addc addw2" data-a="addWidget" aria-label="Add widget">${ic('plus')}<small>Add widget</small></button></div>`;
 }
 
 // ===== focus-group panel =====
